@@ -1,16 +1,15 @@
 pipeline {
     agent any
-
     environment {
         registry = "gauravgaria93/tiny-url-service"
-        registryCredential = '98ffeda2-35ac-4325-812e-b1197d31fee5' // Set your Jenkins DockerHub creds ID
+        registryCredential = '98ffeda2-35ac-4325-812e-b1197d31fee5' // Your Jenkins DockerHub credential ID
         dockerImage = ''
     }
 
     tools {
         maven 'Maven-3.8.6'
     }
-//test
+
     stages {
         stage('Checkout') {
             steps {
@@ -45,7 +44,7 @@ pipeline {
         stage('Health Check') {
             steps {
                 retry(5) {
-                    sleep 10
+                    sleep time: 10, unit: 'SECONDS'
                     sh 'curl -f http://localhost:8082/health'
                 }
             }
