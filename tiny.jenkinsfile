@@ -60,7 +60,7 @@ pipeline {
                     sleep 10
 
                     // Health check
-                    sh 'curl -f http://localhost:8082/actuator/health || echo "App not ready yet"'
+                    sh 'curl -f http://localhost:8082/health || echo "App not ready yet"'
                 }
             }
         }
