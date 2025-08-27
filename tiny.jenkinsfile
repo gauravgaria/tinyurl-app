@@ -1,10 +1,10 @@
 pipeline {
     agent any
-    
+
     tools {
         maven 'Maven-3.8.6'  // Use the name you configured in Global Tool Configuration
     }
-    
+
     stages {
         stage('Checkout') {
             steps {
@@ -12,14 +12,14 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/gauravgaria/tinyurl-app.git'
             }
         }
-        
+
         stage('Build') {
             steps {
                 // Clean and compile the project
                 sh 'mvn clean compile'
             }
         }
-        
+
         // stage('Test') {
         //     steps {
         //         // Run unit tests
@@ -32,14 +32,14 @@ pipeline {
         //         }
         //     }
         // }
-        
+
         stage('Package') {
             steps {
                 // Create JAR file
                 sh 'mvn package -DskipTests'
             }
         }
-        
+
         stage('Archive Artifacts') {
             steps {
                 // Archive the built JAR file
@@ -48,24 +48,24 @@ pipeline {
         }
 
         stage('Deploy Locally') {
-    steps {
-        script {
-            // Kill any existing instance
-            sh 'pkill -f "tiny-url-service" || true'
-            
-            // Start the Spring Boot application
-            sh 'nohup java -jar target/tiny-url-service-0.0.1-SNAPSHOT.jar > app.log 2>&1 &'
-            
-            // Wait for app to start
-            sleep 10
-            
-            // Health check
-            sh 'curl -f http://localhost:8082/actuator/health || echo "App not ready yet"'
+            steps {
+                script {
+                    // Kill any existing instance
+                    sh 'pkill -f "tiny-url-service" || true'
+
+                    // Start the Spring Boot application
+                    sh 'nohup java -jar target/tiny-url-service-0.0.1-SNAPSHOT.jar > app.log 2>&1 &'
+
+                    // Wait for app to start
+                    sleep 10
+
+                    // Health check
+                    sh 'curl -f http://localhost:8082/actuator/health || echo "App not ready yet"'
+                }
+            }
         }
     }
-}
-    }
-    
+
     post {
         success {
             echo 'Pipeline completed successfully!'
