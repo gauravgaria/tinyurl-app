@@ -52,22 +52,9 @@ pipeline {
             sh '''
               java -jar target/tiny-url-service-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
             '''
-            sleep time: 30, unit: 'SECONDS'
+            sleep time: 10, unit: 'SECONDS'
           }
         }
 
-    }
-
-    post {
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed!'
-        }
-        always {
-            // Clean workspace after build
-            cleanWs()
-        }
     }
 }
