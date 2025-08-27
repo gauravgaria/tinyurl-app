@@ -4,7 +4,7 @@ pipeline {
     tools {
         maven 'Maven-3.8.6'  // Use the name you configured in Global Tool Configuration
     }
-
+//test
     stages {
         stage('Checkout') {
             steps {
