@@ -48,21 +48,12 @@ pipeline {
         }
 
         stage('Deploy Locally') {
-            steps {
-                script {
-                    // Kill any existing instance
-                    sh 'pkill -f "tiny-url-service" || true'
-
-                    // Start the Spring Boot application
-                    sh 'nohup java -jar target/tiny-url-service-0.0.1-SNAPSHOT.jar > app.log 2>&1 &'
-
-                    // Wait for app to start
-                    sleep 10
-
-                    // Health check
-                    sh 'curl -f http://localhost:8082/health || echo "App not ready yet"'
-                }
-            }
+          steps {
+            bat 'taskkill /IM java.exe /F' // Stop previous service, if needed
+            bat 'start /B java -jar target\\tiny-url-service-0.0.1-SNAPSHOT.jar > app.log 2>&1'
+            sleep(time: 30, unit: 'SECONDS')
+            bat 'curl -f http://localhost:8082/health || echo "App not ready yet"'
+          }
         }
     }
 
