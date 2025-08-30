@@ -33,7 +33,7 @@ spec:
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /ready
+              path: /health
               port: 8082
             initialDelaySeconds: 5
             periodSeconds: 5
@@ -47,26 +47,4 @@ spec:
                     values:
                       - tiny-url
               topologyKey: "kubernetes.io/hostname" # Distribute pods across different nodes
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: tiny-url-service
-spec:
-  selector:
-    app: tiny-url
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8082
-  type: LoadBalancer
----
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: tiny-url-pdb
-spec:
-  minAvailable: 2 # Ensure at least two pods remain available during disruptions
-  selector:
-    matchLabels:
-      app: tiny-url
+

@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tiny-url-ingress
+  annotations:
+    # Enable nginx ingress rewrite if needed (optional)
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: tinyurl.example.com # replace with your domain or public IP setup
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: tiny-url-service
+                port:
+                  number: 80
