@@ -3,11 +3,10 @@ kind: Ingress
 metadata:
   name: tiny-url-ingress
   annotations:
-    # Enable nginx ingress rewrite if needed (optional)
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: tinyurl.example.com # replace with your domain or public IP setup
+    - host: tinyurl.local # Changed from localhost
       http:
         paths:
           - path: /
